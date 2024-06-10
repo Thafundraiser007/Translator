@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>    
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+<title>Tok Pisin Translator</title>  
+<style>
+        
+body {
+font-family: Arial, sans-serif;
+text-align: center;
+margin: 0;
+padding: 0;
+background-color:  #f0f0f0;      }
+     
+.container {           
+margin-top: 50px;        }
+
+    
+textarea {            
+width: 50%;           
+height: 100px;        
+margin: 20px 0;
+padding: 10px;  
+font-size: 16px;        }
+
+
+button {
+padding: 10px;
+font-size: 16px;
+margin: 10px;
+background-color: #FFFF00;
+color: white;          
+border: none;          
+cursor: pointer;        }
+
+       
+button:hover {        
+background-color: #FF0000;        }
+
+.header, .footer {          
+background-color: #FFFF00;         
+color: white;        
+padding: 15px;        }        
+
+    
+</style>
+
+</head>
+
+
+<body>
+    
+<div class="header">
+      
+<h1>Tok Pisin Translator</h1>
+   
+ </div>
+
+   
+<div class="container">     
+<textarea id="input-text" placeholder="Enter text to translate"></textarea>
+<br>
+<button id="btn-translate">Translate to Tok Pisin</button>
+<br>
+<textarea id="output-text" placeholder="Translated text will appear here" readonly></textarea> 
+</div>
+<div class="footer">
+<p>Datec Tok Pisin Translator</p>
+</div>
+<script>
+        
+const inputText = document.getElementById('input-text');
+const outputText = document.getElementById('output-text');
+const buttonTranslate = document.getElementById('btn-translate');
+
+        
+// Pre-defined English to Tok Pisin dictionary  
+const dictionary = {
+           
+"no": "nogat",  
+"us": "mepla",
+"good": "gut",
+"afternoon": "apinun",
+"night": "nait",     
+"man": "man",  
+"yesterday": "asde",  
+"alright":"orait",
+"hello":"halo",
+"goodbye":"lukim yu",
+"thank you":"tenkyu",
+"please":"ples",    
+"sorry":"sori",
+"yes":"yes",
+"food":"kaikai",
+"water":"wara", 
+"house":"haus",
+"friend":"pren", 
+"child":"pikinini",
+"love":"lav",
+"happy":"amamas",
+"angry":"kros",
+"work":"wok",
+"school":"skul",
+"teacher":"tisa",
+"student":"sumatin",
+"book":"buk",
+"pen":"pen", 
+"paper":"pepa",
+"car":"ka",
+"bicycle":"baik",
+"bus":"bas", 
+"road":"rot",
+"market":"maket",
+"shop":"stoa",
+"money":"kina",
+"dog":"dok", 
+"cat":"pusi", 
+"bird":"pisin",
+"fish":"pis",
+"tree":"diwai",
+"fruit":"prut",
+"vegetable":"kumu",
+"rice":"rais",
+"meat":"mit",
+"egg":"kiau",   
+"milk":"susu",
+"bread":"bret",
+"sugar":"suk",
+"salt":"sol",
+"pepper":"pepa",
+"knife":"naip",
+"spoon":"supspun", 
+"fork":"pok",
+"plate":"plet",
+"cup":"kap",
+"bottle":"botol",
+"window":"windou",
+"door":"dua", 
+"chair":"sia",  
+"table":"tebol",
+"bed":"bet",
+"room":"rum",   
+"clothes":"klos", 
+"shoes":"su",
+"hat":"het",
+"bag":"bilum", 
+"soap":"sop",  
+"toothbrush":"brus bilong tit",
+"toothpaste":"titpis",       
+"comb":"komb",
+"shower":"sawas",  
+"bath":"bat",      
+"toilet":"toilet",    
+"medicine":"marasin",         
+"hospital":"haus sik",       
+"doctor":"dokta",        
+"nurse":"nars",           
+"clinic":"klinika",      
+"fire":"paia",          
+"police":"polis",      
+"jail":"kalabus",     
+"court":"kot",        
+"judge":"jas",          
+"lawyer":"loia",          
+"government":"gavman",      
+"president":"presiden",   
+"prime minister":"praim minista",      
+"minister":"minista",     
+"chief":"sif",          
+"village":"ples",        
+"town":"taun",          
+"city":"siti",           
+"country":"kantri",     
+"island":"aelan",     
+"mountain":"maunten",    
+"river":"wara",         
+"sea":"solwara",    
+"beach":"bisi",    
+"rain":"ren",     
+"sun":"san",      
+"moon":"mun",     
+"star":"sta",      
+"sky":"skai",       
+"wind":"win",        
+"cloud":"klaut",   
+"weather":"wedas",    
+"season":"taim bilong yia",   
+"hot":"hat",      
+"cold":"kol",       
+"dry":"draipela",    
+"wet":"wet",        
+"day":"de",     
+"night":"nait",    
+"morning":"moning",  
+"afternoon":"apinun",   
+"evening":"ivning",     
+"today":"tude",      
+"tomorrow":"tumora",     
+"week":"wik",          
+"month":"mun",       
+"year":"yia",        
+"time":"taim",         
+"hour":"aua",        
+"minute":"minit",      
+"second":"seken",   
+"clock":"klok",
+"phone":"fone",  
+"hand":"han",
+"heart":"lewa",
+"drunk":"spak",
+"inlaw":"tambu",
+"hungry":"hungere",
+"feeling":"peelim",
+"mother":"mama",
+"father":"papa",
+"grandfather":"bubu papa",
+"grandmother":"bubu mama",
+"where":"wer",
+"leave":"larim",
+"mine":"blomi",
+"break":"brukim",
+"pain":"pen",
+"female":"meri",
+"girl":"meri",
+"lady":"meri",
+"child":"pikinini",
+"house":"haus",
+"food":"kaikai",
+"water":"wara",
+"old":"lapun", 
+"big":"bigpela",
+"small":"liklik",
+"wash":"waswas",
+"sing":"singsing",
+"village":"ples",
+"meet":"bung",  
+"another":"narapela",
+"plane":"balus",
+"ancestor":"tumbuna",  
+"forbidden":"tambuu tru",
+"cargo":"kago",  "remove":"rausim",
+"mouth":"maus", "write":"raitim",
+"fight":"pait",
+"hit":"paitim",
+"learn":"lainim",
+"fire":"paia",
+"cotton":"laplap",
+"try":"traim",
+"found":"painim",
+"hard":"hat",
+"fast":"hariap",
+"slow":"isi isi",
+"come":"kam",
+"try":"traim",
+"full":"pulap",
+"clean":"klinim",
+"make":"makim",
+"thank you":"tangu",
+"straight":"stret",
+"back":"backside",
+"up":"antap",
+"down":"tamblo",
+"use":"usim",
+"loan":"dinau",
+"forget it":"lus tingting",
+"mine":"blomi",
+"dont":"noken",
+"student":"sumatin",
+"foreigner":"white mahn",
+"follow":"behainim",
+"clothe":"bilas",
+"clothes":"bilas",
+"beard":"maus grass",
+"yes":"orait",
+"teach":"teachim",
+"underneath":"andanit",
+"dark":"tutak",
+"morning":"tulait",
+"watch":"watchim",
+"hold":"hollim",
+"many":"planti",
+"shoot":"sootim"
+     
+  // Add more words 
+      };
+
+
+function translateText(text) {
+const words = text.toLowerCase().split(' ');
+const translatedWords = words.map(word => {
+if (dictionary[word]) {
+return dictionary[word];}
+else {
+const suggestions = getSuggestions(word);
+if (suggestions.length > 0) {
+return `[${word} (translation not found, did you mean: ${suggestions.join(', ')})]`; }
+else {
+return `[${word} (translation not found)]`;
+}
+}
+});
+return translatedWords.join(' '); }
+function getSuggestions(word) {  
+const maxDistance = 2;
+const suggestions = Object.keys(dictionary).filter(dictWord => {
+return getLevenshteinDistance(word, dictWord) <= maxDistance;
+    });
+return suggestions;}
+function getLevenshteinDistance(a, b) {
+const matrix = [];
+let i;
+for (i = 0; i <= b.length; i++) {
+matrix[i] = [i];   }
+let j;
+for (j = 0; j <= a.length; j++) {
+matrix[0][j] = j;   }
+for (i = 1; i <= b.length; i++) {
+for (j = 1; j <= a.length; j++) {
+if (b.charAt(i - 1) === a.charAt(j - 1)) {
+matrix[i][j] = matrix[i - 1][j - 1];}
+else {
+matrix[i][j] = Math.min(
+matrix[i - 1][j - 1] + 1,
+Math.min(matrix[i][j - 1] + 1, 
+matrix[i - 1][j] + 1)
+);
+}
+}
+}
+return matrix[b.length][a.length];}
+function handleTranslate() {
+const text = inputText.value;const translatedText = translateText(text);outputText.value = translatedText;}
+buttonTranslate.addEventListener("click", handleTranslate);
+</script>
+
+
+
+</body>
+
+
+</html>
